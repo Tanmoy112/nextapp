@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable react/jsx-key */
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { getProduct } from "./service";
 
 function TableComp() {
   const [tableData, settableData] = useState([]);
   const [pageData, setpageData] = useState(1);
+
   const getTableData = async () => {
     const { data, err } = await getProduct();
     if (data) {
@@ -15,9 +14,11 @@ function TableComp() {
       console.log(err, "error message");
     }
   };
+
   useEffect(() => {
     getTableData();
   }, []);
+
   return (
     <div
       style={{
@@ -33,23 +34,25 @@ function TableComp() {
           borderSpacing: "0px",
         }}
       >
-        <tr>
-          <th className="heading">Id</th>
-          <th className="heading">Title</th>
-          <th className="heading">Image</th>
-          <th className="heading">Category</th>
-          <th className="heading">Price</th>
-          <th className="heading">Description</th>
-        </tr>
-        {tableData.slice(pageData * 10 - 10, pageData * 10).map((ele) => {
-          return (
-            <tr className="row">
+        <thead>
+          <tr>
+            <th className="heading">Id</th>
+            <th className="heading">Title</th>
+            <th className="heading">Image</th>
+            <th className="heading">Category</th>
+            <th className="heading">Price</th>
+            <th className="heading">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.slice(pageData * 10 - 10, pageData * 10).map((ele) => (
+            <tr className="row" key={ele.id}>
               <td style={{ border: "1px solid black", padding: "0px" }}>
                 {ele.id}
               </td>
               <td style={{ border: "1px solid black" }}>{ele.title}</td>
               <td style={{ border: "1px solid black" }}>
-                <Image src={ele.image} height={100} width={100} />
+                <img src={ele.image} height={100} width={100} alt="Product" />
               </td>
               <td style={{ border: "1px solid black" }}>{ele.category}</td>
               <td style={{ border: "1px solid black" }}>{`₹${ele.price}`}</td>
@@ -57,8 +60,8 @@ function TableComp() {
                 style={{ border: "1px solid black" }}
               >{`${ele.description.substring(0, 30)}...`}</td>
             </tr>
-          );
-        })}
+          ))}
+        </tbody>
       </table>
       <div
         style={{
@@ -69,7 +72,7 @@ function TableComp() {
       >
         <span
           onClick={() => {
-            if (pageData == 1) {
+            if (pageData === 1) {
             } else {
               setpageData(pageData - 1);
             }
@@ -77,10 +80,10 @@ function TableComp() {
           className="pagination"
           style={{
             fontSize: "30px",
-            fontWeight: "500px",
+            fontWeight: "500",
             border: pageData !== 1 ? "1px solid blue" : "1px solid gray",
             cursor: "pointer",
-            color: pageData == 1 ? "gray" : "blue",
+            color: pageData === 1 ? "gray" : "blue",
             borderRadius: "10px",
             height: "40px",
             width: "80px",
@@ -90,7 +93,7 @@ function TableComp() {
         </span>
         <span
           onClick={() => {
-            if (Math.floor(tableData.length / 10) == pageData) {
+            if (Math.floor(tableData.length / 10) === pageData) {
             } else {
               setpageData(pageData + 1);
             }
@@ -98,14 +101,14 @@ function TableComp() {
           className="pagination"
           style={{
             fontSize: "30px",
-            fontWeight: "500px",
+            fontWeight: "500",
             border:
               Math.floor(tableData.length / 10) !== pageData
                 ? "1px solid blue"
                 : "1px solid gray",
             cursor: "pointer",
             color:
-              Math.floor(tableData.length / 10) == pageData ? "gray" : "blue",
+              Math.floor(tableData.length / 10) === pageData ? "gray" : "blue",
             borderRadius: "10px",
             height: "40px",
             width: "80px",
