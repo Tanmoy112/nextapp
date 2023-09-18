@@ -1,0 +1,8 @@
+.heading {
+  min-width: 50px;
+  max-width: 250px;
+  border-bottom: 1px solid black;
+}
+.row {
+  border-bottom: 1px solid black;
+}
